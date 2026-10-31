@@ -5,7 +5,7 @@
    Testi: niente punto a fine frase, niente trattini lunghi */
 window.PEZZI = [
 {
-  n: 1, data: '2026-10-31', titolo: 'La bio', sotto: 'la frase sotto il nome', minuti: 10, video: '', tiktok: '',
+  n: 1, data: '2026-10-31', titolo: 'La bio', sotto: 'la frase sotto il nome', minuti: 10, video: '', tiktok: 'https://www.tiktok.com/@gemmalenoci/video/7702783580178484513',
   teaser: 'La prima cosa che legge chi arriva sul tuo profilo, e le tre righe che deve avere',
   io: {
     prima: 'Dubai · Social media marketing per brand, imprenditori e social media manager',
