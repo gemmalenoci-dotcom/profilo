@@ -3,6 +3,7 @@
 (function(){
   var CHIAVE='profilo-mail-ok';
   var ENDPOINT='https://assets.mailerlite.com/jsonp/2697895/forms/202828662361294006/subscribe';
+  var TT=/[?&]utm_source=tiktok(&|$)/.test(location.search),SOCIAL=TT?'TikTok':'Instagram';
   var PRIVACY='https://www.iubenda.com/privacy-policy/15204920';
   if(/[?&]anteprima=tutti\b/.test(location.search))return
   try{if(localStorage.getItem(CHIAVE)==='1')return}catch(e){}
@@ -38,7 +39,7 @@
       '<p>Ogni mercoledì, quando si sblocca il pezzo nuovo, ti scriviamo per mail<br>E ti mandiamo anche l\'invito al Club gratuito di Unlike Academy</p>'+
       '<div class="ac-riga"><input type="text" name="nome" placeholder="Nome" autocomplete="given-name" required aria-label="Nome"><input type="text" name="cognome" placeholder="Cognome" autocomplete="family-name" required aria-label="Cognome"></div>'+
       '<input type="email" name="email" placeholder="La tua email" autocomplete="email" required aria-label="La tua email">'+
-      '<input type="text" name="instagram" placeholder="Il tuo profilo Instagram, es. @nomeprofilo" autocapitalize="none" autocorrect="off" required aria-label="Il tuo profilo Instagram">'+
+      '<input type="text" name="instagram" placeholder="Il tuo profilo '+SOCIAL+', es. @nomeprofilo" autocapitalize="none" autocorrect="off" required aria-label="Il tuo profilo '+SOCIAL+'">'+
       '<label class="ac-spunta"><input type="checkbox" name="consenso" required><span>Accetto di ricevere email di Unlike Academy, mi disiscrivo quando voglio · <a href="'+PRIVACY+'" target="_blank" rel="noopener">Informativa privacy</a></span></label>'+
       '<p class="ac-errore" role="alert"></p>'+
       '<button type="submit">Apri i pezzi</button>'+
@@ -55,16 +56,16 @@
     var email=(form.email.value||'').trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){errore.textContent='Controlla l\'indirizzo email';form.email.focus();return}
     if(!form.consenso.checked){errore.textContent='Per aprire la guida serve la spunta';return}
-    var nome=(form.nome.value||'').trim(),cognome=(form.cognome.value||'').trim(),ig=(form.instagram.value||'').trim().replace(/^@+/,'').replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/[\/?].*$/,'');
+    var nome=(form.nome.value||'').trim(),cognome=(form.cognome.value||'').trim(),ig=(form.instagram.value||'').trim().replace(/^@+/,'').replace(/^https?:\/\/(www\.)?(instagram\.com\/|tiktok\.com\/@?)/i,'').replace(/^@+/,'').replace(/[\/?].*$/,'');
     if(!nome||!cognome){errore.textContent='Servono nome e cognome';(nome?form.cognome:form.nome).focus();return}
-    if(!/^[A-Za-z0-9._]{1,30}$/.test(ig)){errore.textContent='Scrivi il tuo profilo Instagram, per esempio @nomeprofilo';form.instagram.focus();return}
+    if(!/^[A-Za-z0-9._]{1,30}$/.test(ig)){errore.textContent='Scrivi il tuo profilo '+SOCIAL+', per esempio @nomeprofilo';form.instagram.focus();return}
     errore.textContent='';
     bottone.disabled=true;bottone.textContent='Un attimo';
     var dati=new FormData();
     dati.append('fields[email]',email);
     dati.append('fields[name]',nome);
     dati.append('fields[last_name]',cognome);
-    dati.append('fields[instagram]',ig);
+    dati.append(TT?'fields[tiktok]':'fields[instagram]',ig);
     dati.append('ml-submit','1');
     dati.append('anticsrf','true');
     var chiudi=function(){
